@@ -9,8 +9,10 @@ import net.minecraft.block.CactusBlock;
 import net.minecraft.block.ChorusFlowerBlock;
 import net.minecraft.block.CocoaBlock;
 import net.minecraft.block.CoralBlock;
+import net.minecraft.block.CropsBlock;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.NetherWartBlock;
+import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SugarCaneBlock;
 import net.minecraft.block.VineBlock;
 import net.minecraft.client.util.ITooltipFlag;
@@ -61,40 +63,55 @@ public class ItemCustomRingFarmer extends Item
                         BlockPos tagetPos = new BlockPos(theX, theY, theZ);
                         
                         BlockState blockstate = world.getBlockState(tagetPos);
-
-                        //Check if blocks implement IGrowable, then use grow()
-                        if (blockstate.getBlock() instanceof IGrowable)
+                        
+                        
+//     TO BE DELETED AT SOME POINT WHEN NEW METHOD FIXES PROBLEM WITH WILD NATURE
+//                        //Check if blocks implement IGrowable, then use grow()
+//                        if (blockstate.getBlock() instanceof IGrowable)
+//                        {
+//                        	IGrowable igrowable = (IGrowable)blockstate.getBlock();
+//                            
+//                        	//Exclude these ones
+//                            if((igrowable == Blocks.GRASS_BLOCK) ||
+//                            		(igrowable == Blocks.TALL_GRASS) ||
+//                            		(igrowable == Blocks.GRASS) ||
+//                            		(igrowable == Blocks.SUNFLOWER) || 
+//                            		(igrowable == Blocks.LILAC) || 
+//                            		(igrowable == Blocks.ROSE_BUSH) || 
+//                            		(igrowable == Blocks.PEONY) || 
+//                            		(igrowable == Blocks.SEAGRASS) ||
+//                            		(igrowable == Blocks.TALL_SEAGRASS))
+//                            {
+//                            	continue;
+//                            }
+//                            if (igrowable.canGrow(world, tagetPos, blockstate, world.isRemote))
+//                            {
+//                                {
+//                                	if (!world.isRemote)
+//                                    {
+//                                		 if (player.ticksExisted % 60 == 0) {
+//                                			 igrowable.grow(world, world.rand, tagetPos, blockstate);
+//                                		 }
+//                                    }
+//                                }
+//                            } 
+//                        }
+                        
+                        //For basic growing blocks that use tick()
+                        if ((blockstate.getBlock() instanceof CropsBlock) ||
+                        		(blockstate.getBlock() instanceof SaplingBlock)) 
                         {
-                        	IGrowable igrowable = (IGrowable)blockstate.getBlock();
-                            
-                        	//Exclude these ones
-                            if((igrowable == Blocks.GRASS_BLOCK) ||
-                            		(igrowable == Blocks.TALL_GRASS) ||
-                            		(igrowable == Blocks.GRASS) ||
-                            		(igrowable == Blocks.SUNFLOWER) || 
-                            		(igrowable == Blocks.LILAC) || 
-                            		(igrowable == Blocks.ROSE_BUSH) || 
-                            		(igrowable == Blocks.PEONY) || 
-                            		(igrowable == Blocks.SEAGRASS) ||
-                            		(igrowable == Blocks.TALL_SEAGRASS))
-                            {
-                            	continue;
-                            }
-                            if (igrowable.canGrow(world, tagetPos, blockstate, world.isRemote))
-                            {
-                                {
-                                	if (!world.isRemote)
-                                    {
-                                		 if (player.ticksExisted % 60 == 0) {
-                                			 igrowable.grow(world, world.rand, tagetPos, blockstate);
-                                		 }
-                                    }
-                                }
-                            } 
+                        	if (!world.isRemote)
+                    		{
+                        		if (player.ticksExisted % 12 == 0)
+                        		{
+                        			blockstate.tick(world, tagetPos, world.rand);
+                       		 	}                                                               
+                    		}
                         }
                         
                         //For slower growing blocks that use tick()
-                        if ((blockstate.getBlock() instanceof VineBlock) ||
+                        if ((blockstate.getBlock() instanceof VineBlock) ||                     		               
                         		(blockstate.getBlock() instanceof SugarCaneBlock) ||
                         		(blockstate.getBlock() instanceof NetherWartBlock) ||
                         		(blockstate.getBlock() instanceof CactusBlock))
@@ -110,7 +127,7 @@ public class ItemCustomRingFarmer extends Item
                         	
                         //For faster growing blocks that use tick()
                         if ((blockstate.getBlock() instanceof BambooBlock) ||                         		
-                        		(blockstate.getBlock() instanceof CoralBlock) ||
+                        		(blockstate.getBlock() instanceof CoralBlock) ||		
                         		(blockstate.getBlock() instanceof CocoaBlock) ||  
                         		(blockstate.getBlock() instanceof ChorusFlowerBlock) )
                         {

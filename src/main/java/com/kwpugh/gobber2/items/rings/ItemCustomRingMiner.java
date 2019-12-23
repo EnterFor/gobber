@@ -64,6 +64,7 @@ public class ItemCustomRingMiner extends Item
 									block instanceof SandBlock ||
 									block == Blocks.DIRT || 
 									block == Blocks.GRASS_PATH || 
+									block == Blocks.CLAY || 
 									block == Blocks.SAND  || 
 									block == Blocks.RED_SAND  || 
 									block == Blocks.SANDSTONE || 
